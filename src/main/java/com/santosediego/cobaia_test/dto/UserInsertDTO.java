@@ -1,0 +1,38 @@
+package com.santosediego.cobaia_test.dto;
+
+import com.santosediego.cobaia_test.services.validation.UserInsertValid;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+@UserInsertValid
+public class UserInsertDTO extends UserDTO {
+
+	private static final long serialVersionUID = 1L;
+
+	@Size(min = 3, max = 120, message = "Nome de usuário deve ter entre 5 e 120 caracteres.")
+	@NotBlank(message = "Nome de usuário é obrigatório")
+	private String username;
+	@NotBlank(message = "Senha é obrigatória")
+	private String password;
+
+	public UserInsertDTO() {
+		super();
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+}
