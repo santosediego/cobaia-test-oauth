@@ -2,7 +2,13 @@ package com.santosediego.cobaia_test.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.santosediego.cobaia_test.entities.enums.Role;
 
@@ -17,7 +23,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(schema = "auth", name = "tb_user")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -82,10 +88,6 @@ public class User implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getUsername() {
-		return username;
 	}
 
 	public void setUsername(String username) {
@@ -157,5 +159,44 @@ public class User implements Serializable {
 			return false;
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Role roleEnum = Role.fromId(this.role);
+
+	    if (roleEnum == Role.ADMIN) {
+	        return List.of(
+	            new SimpleGrantedAuthority("ROLE_ADMIN"),
+	            new SimpleGrantedAuthority("ROLE_USER")
+	        );
+	    }
+
+	    return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return active;
 	}
 }
