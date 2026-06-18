@@ -24,7 +24,7 @@ This project is an API built with **Java, Spring Boot, Liquibase for database mi
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/santosediego/cobaia-test-auth.git
+git clone https://github.com/santosediego/spring-security-jwt-poc.git
 ```
 
 2. Install dependencies with Maven:
